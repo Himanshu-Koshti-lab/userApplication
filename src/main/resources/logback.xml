@@ -2,7 +2,7 @@
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{30} -%kvp- %msg%n</pattern>
+            <pattern>%highlight(%d{HH:mm:ss.SSS} [%thread] %-5level %yellow(%logger{30}) -%kvp- %msg%n)</pattern>
         </encoder>
     </appender>
 
@@ -10,7 +10,7 @@
         <file>./logs/UserApplication.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>./logs/UserApplication.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>15</maxHistory>
             <totalSizeCap>3MB</totalSizeCap>
 
