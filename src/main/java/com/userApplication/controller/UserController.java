@@ -1,6 +1,7 @@
 package com.userApplication.controller;
 
 import com.userApplication.entity.UserData;
+import com.userApplication.exceptionhandler.UserRegistrationException;
 import com.userApplication.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,14 +17,11 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    //    find all
     @GetMapping("/getAllUser")
     public List<UserData> getAllUsersData() {
         List<UserData> usr = userService.getAllUsersData();
         return usr;
     }
-
-//    find by email
 
     @GetMapping("/findByEmail/{email}")
     public UserData getUserByEmail(@PathVariable("email") String email) {
@@ -31,24 +29,24 @@ public class UserController {
         return userService.getUserByEmail(email);
     }
 
-
-//    find by phoneNumber
-
     @GetMapping("/findByPhoneNumber/{phoneNumber}")
     public UserData getUserByPhoneNumber(@PathVariable("phoneNumber") Long phoneNumber) {
 
         return userService.getUserByPhoneNumber(phoneNumber);
     }
 
-    // Save data
-
     @PostMapping("/saveUser")
-    public ResponseEntity<String> saveUserdata(@RequestBody List<UserData> data) {
-        for (UserData u : data) {
-            userService.saveUserData(u);
+    public ResponseEntity<String> saveUserdata(@RequestBody UserData userData) throws UserRegistrationException {
+        if (userService.getUserByPhoneNumber(userData.getPhoneNumber()) == null) {
+            if (userService.getUserByEmail(userData.getEmail()) == null) {
+                userService.saveUserData(userData);
+                return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully");
+            } else {
+                throw new UserRegistrationException("Something Went wrong with email.");
+            }
+        } else {
+            throw new UserRegistrationException("Something Went wrong with phone number.");
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body("User created succesfully");
     }
-
 
 }

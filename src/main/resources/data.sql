@@ -6,8 +6,8 @@ CREATE TABLE user_data (
     last_name VARCHAR(50) NOT NULL,   -- Last name of the user
     gender VARCHAR(10),               -- Gender of the user
     date_of_birth DATE,               -- Date of birth of the user
-    email VARCHAR(100) NOT NULL UNIQUE, -- Email address must be unique
-    phone_number BIGINT NOT NULL UNIQUE, -- Phone number must be unique
+    email VARCHAR(100),               -- Email address must be unique
+    phone_number BIGINT,              -- Phone number must be unique
     password VARCHAR(255) NOT NULL,   -- Password for the user account
     role_id INT,                      -- Role identifier (Foreign key to roles table)
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Record creation time
