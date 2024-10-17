@@ -1,9 +1,6 @@
 package com.userApplication.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,8 +25,12 @@ public class UserData {
 
     Date dateOfBirth;
 
+    @Column(unique = true)
+    //@Email(message = "Email should be valid")
+    //@NotBlank(message = "Email is mandatory")
     String email;
 
+    @Column(unique = true)
     Long phoneNumber;
 
     String password;

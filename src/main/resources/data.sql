@@ -1,3 +1,22 @@
+DROP TABLE IF EXISTS user_data;
+
+CREATE TABLE user_data (
+    user_id SERIAL PRIMARY KEY,       -- Unique identifier for each user
+    first_name VARCHAR(50) NOT NULL,  -- First name of the user
+    last_name VARCHAR(50) NOT NULL,   -- Last name of the user
+    gender VARCHAR(10),               -- Gender of the user
+    date_of_birth DATE,               -- Date of birth of the user
+    email VARCHAR(100) NOT NULL UNIQUE, -- Email address must be unique
+    phone_number BIGINT NOT NULL UNIQUE, -- Phone number must be unique
+    password VARCHAR(255) NOT NULL,   -- Password for the user account
+    role_id INT,                      -- Role identifier (Foreign key to roles table)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Record creation time
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- Last update time
+);
+
+
+
+
 INSERT INTO user_data (first_name, last_name, gender, date_of_birth, email, phone_number, password, role_id) VALUES ('Michael', 'Brown', 'Male', '1998-01-15', 'michael.brown1@example.com', 1376738890, 'password101', 1);
 INSERT INTO user_data (first_name, last_name, gender, date_of_birth, email, phone_number, password, role_id) VALUES ('Olivia', 'Davis', 'Male', '1986-10-13', 'olivia.davis2@example.com', 1711905980, 'password102', 4);
 INSERT INTO user_data (first_name, last_name, gender, date_of_birth, email, phone_number, password, role_id) VALUES ('Jane', 'Johnson', 'Male', '1989-05-10', 'jane.johnson3@example.com', 1540605986, 'password101', 2);
