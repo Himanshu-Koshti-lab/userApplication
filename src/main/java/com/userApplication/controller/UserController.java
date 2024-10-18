@@ -53,6 +53,11 @@ public class UserController {
         }
     }
 
+    @GetMapping("/setupRep")
+    public ResponseEntity<String> setUp() {
+        userService.setUpData();
+        return ResponseEntity.status(HttpStatus.OK).body("done");
+    }
 
     @PostMapping("/login")
     public ResponseEntity<String> loginMethod(@RequestParam String email, @RequestParam String password) {
