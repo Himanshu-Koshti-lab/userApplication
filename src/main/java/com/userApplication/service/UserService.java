@@ -41,7 +41,7 @@ public class UserService {
         userDataRepository.save(userByEmail);
     }
 
-    public void setUpData(){
+    public void setUpData() {
 
         List<UserData> userList = new ArrayList<>();
 
@@ -56,9 +56,8 @@ public class UserService {
         userList.add(new UserData(9L, "Vikas", "Joshi", "Male", new Date(), "vikas.joshi@example.com", 1745623981L, encodedString("pwd2"), 1));
         userList.add(new UserData(10L, "Sonia", "Mehra", "Female", new Date(), "sonia.mehra@example.com", 1234567890L, encodedString("pwd2"), 1));
 
+        userDataRepository.deleteAll();
         userDataRepository.saveAll(userList);
     }
-
-
 
 }

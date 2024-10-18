@@ -2,6 +2,7 @@ package com.userApplication.controller;
 
 import com.userApplication.entity.UserData;
 import com.userApplication.exceptionhandler.UserRegistrationException;
+import com.userApplication.response.UserResponse;
 import com.userApplication.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,21 +23,23 @@ public class UserController {
     UserService userService;
 
     @GetMapping("/getAllUser")
-    public List<UserData> getAllUsersData() {
-        List<UserData> usr = userService.getAllUsersData();
+    public List<UserResponse> getAllUsersData() {
+        List<UserResponse> usr = new ArrayList<>();
+        for (UserData userData : userService.getAllUsersData()) {
+            usr.add(new UserResponse().getUserResponse(userData));
+        }
         return usr;
     }
 
     @GetMapping("/findByEmail/{email}")
-    public UserData getUserByEmail(@PathVariable("email") String email) {
-
-        return userService.getUserByEmail(email);
+    public UserResponse getUserByEmail(@PathVariable("email") String email) {
+        return new UserResponse().getUserResponse(userService.getUserByEmail(email));
     }
 
     @GetMapping("/findByPhoneNumber/{phoneNumber}")
-    public UserData getUserByPhoneNumber(@PathVariable("phoneNumber") Long phoneNumber) {
+    public UserResponse getUserByPhoneNumber(@PathVariable("phoneNumber") Long phoneNumber) {
 
-        return userService.getUserByPhoneNumber(phoneNumber);
+        return new UserResponse().getUserResponse(userService.getUserByPhoneNumber(phoneNumber));
     }
 
     @PostMapping("/saveUser")
@@ -70,7 +74,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body("Login Failed");
     }
 
-
     @GetMapping("/forgetPassword")
     public ResponseEntity<String> forgetPass(@RequestParam String email) {
         if (userService.getUserByEmail(email) == null)
@@ -80,4 +83,5 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.OK).body("Password update : DefaultPassword");
     }
+
 }
