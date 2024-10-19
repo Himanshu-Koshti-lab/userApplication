@@ -2,16 +2,14 @@ package com.userApplication.service;
 
 import com.userApplication.entity.UserAddress;
 import com.userApplication.entity.UserData;
+import com.userApplication.repository.UserAddressRepository;
 import com.userApplication.repository.UserDataRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static com.userApplication.util.EncoderUtil.encodedString;
 
@@ -20,6 +18,9 @@ public class UserService {
 
     @Autowired
     UserDataRepository userDataRepository;
+
+    @Autowired
+    UserAddressRepository userAddressRepository;
 
     public List<UserData> getAllUsersData() {
         return (List<UserData>) userDataRepository.findAll();
@@ -95,5 +96,17 @@ public class UserService {
     @Transactional
     public void deleteUserByEmail(String email) {
         userDataRepository.deleteByEmail(email);
+    }
+
+    @Transactional
+    public void deleteAddress(Long aId) {
+        userAddressRepository.deleteByAddressId(aId);
+    }
+
+    @Transactional
+    public Optional<UserAddress> getAddressById(Long aId) {
+        Optional<UserAddress> userAddress = userAddressRepository.findById(aId);
+        return userAddress;
+
     }
 }

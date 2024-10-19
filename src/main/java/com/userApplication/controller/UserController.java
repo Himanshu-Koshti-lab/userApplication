@@ -106,6 +106,16 @@ public class UserController {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(email + " Not found");
     }
+    @DeleteMapping("/deleteUsersAddress/{email}/{aId}")
+    public ResponseEntity<String> deleteUsersAddress(@PathVariable("email") String email, @PathVariable("aId") Long aId) {
+
+        if (userService.getUserByEmail(email) != null && userService.getAddressById(aId)!=null) {
+            System.out.println("user found");
+            userService.deleteAddress(aId);
+            return ResponseEntity.status(HttpStatus.OK).body(email + " address deleted successfully");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(email + " Not found");
+    }
 
 
 }
