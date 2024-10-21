@@ -1,5 +1,6 @@
 package com.userApplication.controller;
 
+import com.userApplication.entity.UserAddress;
 import com.userApplication.entity.UserData;
 import com.userApplication.exceptionhandler.UserRegistrationException;
 import com.userApplication.response.UserResponse;
@@ -31,6 +32,12 @@ public class UserController {
         return usr;
     }
 
+    @GetMapping("/getMasterData")
+    public List<UserData> masterData() {
+        List<UserData> data = userService.getAllUsersData();
+        return data;
+    }
+
     @GetMapping("/findByEmail/{email}")
     public UserResponse getUserByEmail(@PathVariable("email") String email) {
         return new UserResponse().getUserResponse(userService.getUserByEmail(email));
@@ -47,6 +54,11 @@ public class UserController {
         if (userService.getUserByPhoneNumber(userData.getPhoneNumber()) == null) {
             if (userService.getUserByEmail(userData.getEmail()) == null) {
                 userData.setPassword(new BCryptPasswordEncoder().encode(userData.getPassword()));
+                List<UserAddress> addresses = new ArrayList<>();
+                for (UserAddress ur : userData.getUserAddress()) {
+                    addresses.add(ur);
+                }
+                userData.setUserAddress(addresses);
                 userService.saveUserData(userData);
                 return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully");
             } else {
@@ -83,5 +95,28 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.OK).body("Password update : DefaultPassword");
     }
+
+    @DeleteMapping("/deleteUser/{email}")
+    public ResponseEntity<String> deleteUser(@PathVariable("email") String email) {
+
+        if (userService.getUserByEmail(email) != null) {
+            System.out.println("user found");
+            userService.deleteUserByEmail(email);
+            return ResponseEntity.status(HttpStatus.OK).body(email + " deleted successfully");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(email + " Not found");
+    }
+
+    @DeleteMapping("/deleteUsersAddress/{email}/{aId}")
+    public ResponseEntity<String> deleteUsersAddress(@PathVariable("email") String email, @PathVariable("aId") Long aId) {
+
+        if (userService.getUserByEmail(email) != null && userService.getAddressById(aId).isPresent()) {
+            System.out.println("user found");
+            userService.deleteAddress(aId);
+            return ResponseEntity.status(HttpStatus.OK).body(email + " address deleted successfully");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(email + " Not found");
+    }
+
 
 }
